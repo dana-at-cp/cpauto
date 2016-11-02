@@ -32,6 +32,6 @@ class WebClientError(Error):
         super(WebClientError, self).__init__(message)
         self.http_status_code = http_status_code
 
-class SessionsClientError(WebClientError):
-    """Exception raised when an Amazon web client runs into trouble."""
+class CoreClientError(WebClientError):
+    """Exception raised when an core web client runs into trouble."""
     pass

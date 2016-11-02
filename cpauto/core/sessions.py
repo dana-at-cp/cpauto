@@ -22,12 +22,12 @@ This module contains the primary objects needed to manage R80 Web API sessions.
 
 """
 
-from .exceptions import SessionsClientError
+from .exceptions import CoreClientError
 
 import requests
 
-class SessionsClient:
-    USER_AGENT = "cpauto-SessionsClient/0.0.1"
+class CoreClient:
+    USER_AGENT = "cpauto-CoreClient/0.0.1"
     BASE_URI_PATH = "/web_api/"
 
     def __init__(self, user, password, mgmt_server, port='443', verify=True):
@@ -40,24 +40,51 @@ class SessionsClient:
         self.verify = verify
 
     def build_uri(self, endpoint):
-        uri = 'https://' + self.mgmt_server + ':' + self.port + SessionsClient.BASE_URI_PATH + endpoint
+        uri = 'https://' + self.mgmt_server + ':' + self.port + CoreClient.BASE_URI_PATH + endpoint
         return uri
 
     def build_headers(self, send_sid=True):
-        headers = { 'content-type': 'application/json', 'user-agent': SessionsClient.USER_AGENT }
+        headers = { 'content-type': 'application/json', 'user-agent': CoreClient.USER_AGENT }
         if send_sid and self.last_login_json is not None:
             headers['x-chkp-sid'] = self.last_login_json['sid']
         return headers
 
+    def http_post(self, endpoint, send_sid=True, payload={}):
+        uri = self.build_uri(endpoint)
+        headers = self.build_headers(send_sid)
+        return requests.post(uri, headers=headers, json=payload, verify=self.verify)
+
     def login(self):
-        uri = self.build_uri('login')
-        headers = self.build_headers(send_sid=False)
         payload = { 'user': self.user,
                     'password': self.password }
-        r = requests.post(uri, headers=headers, json=payload, verify=self.verify)
+        r = self.http_post('login', send_sid=False, payload=payload)
         self.last_login_code = r.status_code
         if r.status_code != 200:
-            raise SessionsClientError("Failed to login", r.status_code)
+            raise CoreClientError("Failed to login", r.status_code)
         resp_json = r.json()
         self.last_login_json = resp_json
         return resp_json
+
+    def logout(self):
+        r = self.http_post('logout')
+        if r.status_code != 200:
+            raise CoreClientError("Failed to logout", r.status_code)
+        return r.json()
+
+    def publish(self):
+        r = self.http_post('publish')
+        if r.status_code != 200:
+            raise CoreClientError("Failed to publish", r.status_code)
+        return r.json()
+
+    def discard(self):
+        r = self.http_post('discard')
+        if r.status_code != 200:
+            raise CoreClientError("Failed to discard", r.status_code)
+        return r.json()
+
+    def keepalive(self):
+        r = self.http_post('keepalive')
+        if r.status_code != 200:
+            raise CoreClientError("Failed to keepalive", r.status_code)
+        return r.json()
