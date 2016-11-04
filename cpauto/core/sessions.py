@@ -26,65 +26,63 @@ from .exceptions import CoreClientError
 
 import requests
 
+class CoreClientResult:
+    def __init__(self, status_code, json):
+        self.status_code = status_code
+        self.__json = json
+
+    def json(self):
+        return dict(self.__json)
+
 class CoreClient:
     USER_AGENT = "cpauto-CoreClient/0.0.1"
     BASE_URI_PATH = "/web_api/"
 
     def __init__(self, user, password, mgmt_server, port='443', verify=True):
-        self.last_login_code = None
-        self.last_login_json = None
-        self.user = user
-        self.password = password
-        self.mgmt_server = mgmt_server
-        self.port = port
-        self.verify = verify
+        self.__last_login_result = None
+        self.__user = user
+        self.__password = password
+        self.__mgmt_server = mgmt_server
+        self.__port = port
+        self.__verify = verify
+
+    def merge_payloads(self, payload_a, payload_b):
+        payload_c = payload_a.copy()
+        payload_c.update(payload_b)
+        return payload_c
 
     def build_uri(self, endpoint):
-        uri = 'https://' + self.mgmt_server + ':' + self.port + CoreClient.BASE_URI_PATH + endpoint
+        uri = 'https://' + self.__mgmt_server + ':' + self.__port + CoreClient.BASE_URI_PATH + endpoint
         return uri
 
     def build_headers(self, send_sid=True):
         headers = { 'content-type': 'application/json', 'user-agent': CoreClient.USER_AGENT }
-        if send_sid and self.last_login_json is not None:
-            headers['x-chkp-sid'] = self.last_login_json['sid']
+        if send_sid and self.__last_login_result is not None:
+            last_login_json = self.__last_login_result.json()
+            headers['x-chkp-sid'] = last_login_json['sid']
         return headers
 
     def http_post(self, endpoint, send_sid=True, payload={}):
         uri = self.build_uri(endpoint)
         headers = self.build_headers(send_sid)
-        return requests.post(uri, headers=headers, json=payload, verify=self.verify)
+        r = requests.post(uri, headers=headers, json=payload, verify=self.__verify)
+        return CoreClientResult(r.status_code, r.json())
 
     def login(self):
-        payload = { 'user': self.user,
-                    'password': self.password }
+        payload = { 'user': self.__user,
+                    'password': self.__password }
         r = self.http_post('login', send_sid=False, payload=payload)
-        self.last_login_code = r.status_code
-        if r.status_code != 200:
-            raise CoreClientError("Failed to login", r.status_code)
-        resp_json = r.json()
-        self.last_login_json = resp_json
-        return resp_json
+        self.__last_login_result = r
+        return r
 
     def logout(self):
-        r = self.http_post('logout')
-        if r.status_code != 200:
-            raise CoreClientError("Failed to logout", r.status_code)
-        return r.json()
+        return self.http_post('logout')
 
     def publish(self):
-        r = self.http_post('publish')
-        if r.status_code != 200:
-            raise CoreClientError("Failed to publish", r.status_code)
-        return r.json()
+        return self.http_post('publish')
 
     def discard(self):
-        r = self.http_post('discard')
-        if r.status_code != 200:
-            raise CoreClientError("Failed to discard", r.status_code)
-        return r.json()
+        return self.http_post('discard')
 
     def keepalive(self):
-        r = self.http_post('keepalive')
-        if r.status_code != 200:
-            raise CoreClientError("Failed to keepalive", r.status_code)
-        return r.json()
+        return self.http_post('keepalive')
