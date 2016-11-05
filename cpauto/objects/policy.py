@@ -14,23 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpauto.objects.policy
-~~~~~~~~~~~~~~~~~~~~~
+#cpauto.objects.policy
+#~~~~~~~~~~~~~~~~~~~~~
 
-This module contains the classes needed to manage policy objects.
-
-"""
+"""This module contains the classes needed to manage policy objects."""
 
 from .exceptions import PolicyClientError
-
-import json
 
 class PolicyClient:
     def __init__(self, core_client):
         self.__core_client = core_client
 
     def install(self, access=True, threat=True, policy_package=None, targets=None):
+        """Installs the specified policy package or the standard policy package. Returns CoreClientResult object.
+
+        :param access: (optional) Install access policy. Default is true.
+        :param threat: (optional) Install threat prevention policy. Default is true.
+        :param policy_package: (optional) Install specific policy package. Default is standard.
+        :type policy_package: string
+        :param targets: (optional) Policy install targets.
+        :type targets: string or list of strings
+        :rtype: cpauto.core.sessions.CoreClientResult
+        """
         payload = {}
         if access:
             payload['access'] = 'True'
@@ -39,10 +44,18 @@ class PolicyClient:
         if policy_package is not None:
             payload['policy-package'] = policy_package
         if targets is not None:
-            payload['targets'] = json.dumps(targets)
+            payload['targets'] = targets
         return self.__core_client.http_post('install-policy', payload=payload)
 
     def add_package(self, name, params={}):
+        """Adds a new policy package. Returns CoreClientResult object.
+
+        :param name: The name of the new policy package.
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
+        :rtype: cpauto.core.sessions.CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-package
         payload = { 'name': name }
-        payload = self.__core_client.merge_payloads(payload, params)
+        if params:
+            payload = self.__core_client.merge_payloads(payload, params)
         return self.__core_client.http_post('add-package', payload=payload)

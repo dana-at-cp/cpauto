@@ -14,13 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpauto.objects.simplegateway
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#cpauto.objects.simplegateway
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This module contains the classes needed to manage simple gateway objects.
-
-"""
+"""This module contains the classes needed to manage simple gateway objects."""
 
 from .exceptions import SimpleGatewayClientError
 
@@ -29,6 +26,16 @@ class SimpleGatewayClient:
         self.__core_client = core_client
 
     def add(self, name, ip_address=None, ipv4_address=None, ipv6_address=None, params={}):
+        """Adds a simple gateway. Returns CoreClientResult object.
+
+        :param name: A name for the new simple gateway.
+        :param ip_address: IPv4 or IPv6 address. If both addresses are required use ipv4_address and ipv6_address fields explicitly.
+        :param ipv4_address: (optional) IPv4 address.
+        :param ipv6_address: (optional) IPv6 address.
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
+        :rtype: cpauto.core.sessions.CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-simple-gateway
         payload = { 'name': name }
         if ip_address is not None:
             payload['ip-address'] = ip_address
@@ -41,6 +48,13 @@ class SimpleGatewayClient:
         return self.__core_client.http_post('add-simple-gateway', payload=payload)
 
     def delete(self, name=None, uid=None):
+        """Deletes a simple gateway. Returns CoreClientResult object.
+
+        :param name: A simple gateway name.
+        :param uid: (optional) A simple gateway unique identifier instead of name.
+        :rtype: cpauto.core.sessions.CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-simple-gateway
         payload = {}
         if uid is not None:
             payload = { 'uid': uid }

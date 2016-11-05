@@ -14,23 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpauto.objects.network
-~~~~~~~~~~~~~~~~~~~~~~
+#cpauto.objects.network
+#~~~~~~~~~~~~~~~~~~~~~~
 
-This module contains the classes needed to manage network objects.
-
-"""
+"""This module contains the classes needed to manage network objects."""
 
 from .exceptions import NetworkClientError
-
-import json
 
 class NetworkClient:
     def __init__(self, core_client):
         self.__core_client = core_client
 
     def add(self, name, params={}):
+        """Adds a network. Returns CoreClientResult object.
+
+        :param name: A name for the new network.
+        :param params: A dictionary of additional, supported parameter names and values.
+        :rtype: cpauto.core.sessions.CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-network
         payload = { 'name': name }
         if params:
             payload = self.__core_client.merge_payloads(payload, params)
