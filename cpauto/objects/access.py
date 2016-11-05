@@ -31,7 +31,7 @@ class AccessClient:
         :param layer: Layer that the rule belongs to identified by name or UID.
         :param position: Position in the rulebase. Can be specified in various ways.
         :type position: string or dict (e.g. '1', 'top', 'bottom', or "{ 'above': 'Section One' }")
-        :param params: A dictionary of additional, supported parameter names and values.
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: cpauto.core.sessions.CoreClientResult
         """
         # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-access-rule
