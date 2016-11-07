@@ -14,13 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpcauto.core.exceptions
-~~~~~~~~~~~~~~~~~~~~~~~
+# cpcauto.core.exceptions
+# ~~~~~~~~~~~~~~~~~~~~~~~
 
-This module contains the set of cpauto core exceptions.
-
-"""
+"""This module contains the set of cpauto core exceptions."""
 
 class Error(Exception):
     """Base class for exceptions in this module."""

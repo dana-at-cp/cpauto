@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#cpauto.objects.policy
-#~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.policy
+# ~~~~~~~~~~~~~~~~~~~~~
 
 """This module contains the classes needed to manage policy objects."""
 
-from .exceptions import PolicyClientError
+from . exceptions import PolicyClientError
 
 class PolicyClient:
     def __init__(self, core_client):

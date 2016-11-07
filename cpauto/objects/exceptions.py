@@ -14,15 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpcauto.objects.exceptions
-~~~~~~~~~~~~~~~~~~~~~~~
+# cpcauto.objects.exceptions
+# ~~~~~~~~~~~~~~~~~~~~~~~
 
-This module contains the set of cpauto objects exceptions.
+"""This module contains the set of cpauto objects exceptions."""
 
-"""
-
-from cpauto.core.exceptions import WebClientError
+from .. core.exceptions import WebClientError
 
 class AccessClientError(WebClientError):
     """Exception raised when an access control and NAT web client runs into trouble."""

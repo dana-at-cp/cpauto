@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#cpauto.objects.simplegateway
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.simplegateway
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """This module contains the classes needed to manage simple gateway objects."""
 
-from .exceptions import SimpleGatewayClientError
+from . exceptions import SimpleGatewayClientError
 
 class SimpleGatewayClient:
     def __init__(self, core_client):

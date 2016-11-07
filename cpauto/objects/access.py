@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#cpauto.objects.access
-#~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.access
+# ~~~~~~~~~~~~~~~~~~~~~
 
 """This module contains the classes needed to manage access control and NAT objects."""
 
-from .exceptions import AccessClientError
+from . exceptions import AccessClientError
 
 class AccessClient:
     def __init__(self, core_client):

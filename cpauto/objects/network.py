@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#cpauto.objects.network
-#~~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.network
+# ~~~~~~~~~~~~~~~~~~~~~~
 
 """This module contains the classes needed to manage network objects."""
 
-from .exceptions import NetworkClientError
+from . exceptions import NetworkClientError
 
 class NetworkClient:
     def __init__(self, core_client):
