@@ -14,15 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-cpauto.core.sessions
-~~~~~~~~~~~~~~~~~~~~
+# cpauto.core.sessions
+# ~~~~~~~~~~~~~~~~~~~~
 
-This module contains the primary objects needed to manage R80 Web API sessions.
+"""This module contains the primary objects needed to manage R80 Web API sessions."""
 
-"""
-
-from .exceptions import CoreClientError
+from . exceptions import CoreClientError
 
 import requests
 
@@ -46,16 +43,11 @@ class CoreClient:
         self.__port = port
         self.__verify = verify
 
-    def merge_payloads(self, payload_a, payload_b):
-        payload_c = payload_a.copy()
-        payload_c.update(payload_b)
-        return payload_c
-
-    def build_uri(self, endpoint):
+    def __build_uri(self, endpoint):
         uri = 'https://' + self.__mgmt_server + ':' + self.__port + CoreClient.BASE_URI_PATH + endpoint
         return uri
 
-    def build_headers(self, send_sid=True):
+    def __build_headers(self, send_sid=True):
         headers = { 'content-type': 'application/json', 'user-agent': CoreClient.USER_AGENT }
         if send_sid and self.__last_login_result is not None:
             last_login_json = self.__last_login_result.json()
@@ -63,26 +55,91 @@ class CoreClient:
         return headers
 
     def http_post(self, endpoint, send_sid=True, payload={}):
-        uri = self.build_uri(endpoint)
-        headers = self.build_headers(send_sid)
+        """Makes an HTTP post to the specified API endpoint using user supplied data.
+        Returns :class:`CoreClientResult <CoreClientResult>` object.
+
+        :param endpoint: The API endpoint (e.g. /login).
+        :param send_sid: Send the session ID as a header when true.
+        :param payload: The payload (dictionary) that will be included
+            as JSON in the body of the request.
+        :rtype: CoreClientResult
+        """
+        uri = self.__build_uri(endpoint)
+        headers = self.__build_headers(send_sid)
         r = requests.post(uri, headers=headers, json=payload, verify=self.__verify)
         return CoreClientResult(r.status_code, r.json())
 
-    def login(self):
+    def merge_payloads(self, payload_a, payload_b):
+        """Merges the contents of two payloads (dictionaries). Returns the
+        contents of the two original payloads as a single payload.
+
+        :param payload_a: A payload to merge
+        :param payload_b: Another payload to merge
+        :rtype: A single payload (dictionary) with the contents of the two original payloads
+        """
+        payload_c = payload_a.copy()
+        payload_c.update(payload_b)
+        return payload_c
+
+    def login(self, params={}):
+        """Login to the R80 Web API server and store the results
+        of the request as a class attribute. Returns a
+        :class:`CoreClientResult <CoreClientResult>` object.
+
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
+        :rtype: CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/login
         payload = { 'user': self.__user,
                     'password': self.__password }
+        if params:
+            payload = self.merge_payloads(payload, params)
         r = self.http_post('login', send_sid=False, payload=payload)
         self.__last_login_result = r
         return r
 
     def logout(self):
+        """Logout of the R80 Web API server and invalidate the session.
+        Returns a :class:`CoreClientResult <CoreClientResult>` object.
+
+        :rtype: CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/logout
         return self.http_post('logout')
 
-    def publish(self):
-        return self.http_post('publish')
+    def publish(self, uid=None):
+        """Makes all changes made visible to other users. Returns a
+        :class:`CoreClientResult <CoreClientResult>` object.
 
-    def discard(self):
-        return self.http_post('discard')
+        :param uid: (optional) Specify a different session unique
+            identifier to publish.
+        :rtype: CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/publish
+        payload = {}
+        if uid is not None:
+            payload['uid'] = uid
+        return self.http_post('publish', payload=payload)
+
+    def discard(self, uid=None):
+        """Discards all changes made and removes them from the database.
+        Returns a :class:`CoreClientResult <CoreClientResult>` object.
+
+        :param uid: (optional) Specify a different sessions unique
+            identifier to discard.
+        :rtype: CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/discard
+        payload = {}
+        if uid is not None:
+            payload['uid'] = uid
+        return self.http_post('discard', payload=payload)
 
     def keepalive(self):
+        """Keeps the session alive and valid. Returns a
+        :class:`CoreClientResult <CoreClientResult>` object.
+
+        :rtype: CoreClientResult
+        """
+        # https://sc1.checkpoint.com/documents/R80/APIs/#web/keepalive
         return self.http_post('keepalive')
