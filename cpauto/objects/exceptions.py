@@ -14,21 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cpcauto.core.exceptions
+# cpcauto.objects.exceptions
 # ~~~~~~~~~~~~~~~~~~~~~~~
 
-"""This module contains the set of cpauto core exceptions."""
+"""This module contains the set of cpauto objects exceptions."""
 
-class Error(Exception):
-    """Base class for exceptions in this module."""
+from .. core.exceptions import WebClientError
+
+class AccessClientError(WebClientError):
+    """Exception raised when an access control and NAT web client runs into trouble."""
     pass
 
-class WebClientError(Error):
-    """Exception raised when a web client runs into trouble."""
-    def __init__(self, message, http_status_code=None):
-        super(WebClientError, self).__init__(message)
-        self.http_status_code = http_status_code
+class NetworkClientError(WebClientError):
+    """Exception raised when a network web client runs into trouble."""
+    pass
 
-class CoreClientError(WebClientError):
-    """Exception raised when an core web client runs into trouble."""
+class PolicyClientError(WebClientError):
+    """Exception raised when a policy web client runs into trouble."""
+    pass
+
+class SimpleGatewayClientError(WebClientError):
+    """Exception raised when a simple gateway web client runs into trouble."""
     pass
