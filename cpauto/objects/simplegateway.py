@@ -19,8 +19,6 @@
 
 """This module contains the classes needed to manage simple gateway objects."""
 
-from . exceptions import SimpleGatewayClientError
-
 class SimpleGatewayClient:
     def __init__(self, core_client):
         self.__core_client = core_client

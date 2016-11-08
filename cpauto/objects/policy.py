@@ -19,8 +19,6 @@
 
 """This module contains the classes needed to manage policy objects."""
 
-from . exceptions import PolicyClientError
-
 class PolicyClient:
     def __init__(self, core_client):
         self.__core_client = core_client

@@ -19,7 +19,7 @@
 
 """This module contains the set of cpauto core exceptions."""
 
-class Error(Exception):
+class Error(IOError):
     """Base class for exceptions in this module."""
     pass
 
