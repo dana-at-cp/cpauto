@@ -19,8 +19,6 @@
 
 """This module contains the classes needed to manage access control and NAT objects."""
 
-from . exceptions import AccessClientError
-
 class AccessClient:
     def __init__(self, core_client):
         self.__core_client = core_client

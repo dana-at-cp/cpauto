@@ -15,16 +15,15 @@
 # limitations under the License.
 
 #
-#  __   __   __        _|_   __  
-# (___ |__) (__( (__(_  |_, (__) 
-#      |                         
+#  __   __   __        _|_
+# (___ |__) (__( (__(_  |_, (__)
+#      |
 #
 
-"""
-cpauto library
-~~~~~~~~~~~~~~~
+# cpauto library
+# ~~~~~~~~~~~~~~
 
-cpauto is a client library, written in Python, for the web APIs exposed
+"""cpauto is a client library, written in Python, for the web APIs exposed
 via Check Point R80 management server software. The Check Point R80 management
 APIs provide automation and integration capabilities that were not available
 in previous versions of Check Point management server software.
@@ -33,11 +32,32 @@ https://sc1.checkpoint.com/documents/R80/APIs/#introduction
 
 usage:
 
-TBD
+>>> import cpauto
+>>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81', verify=False)
+>>> r = cc.login()
+>>> print(r.status_code)
+200
+>>> print(r.json())
+{u'last-login-was-at': {u'posix': 1478636363481, u'iso-8601': u'2016-11-08T15:19-0500'}, u'uid': ...}
+>>> nc = cpauto.NetworkClient(cc)
+>>> r = nc.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
+>>> print(r.status_code)
+200
+>>> print(r.json())
+{u'domain': {u'domain-type': u'domain', u'name': u'SMC User', u'uid': u'41e821a0-3720-11e3-aa6e-0800200c9fde'}, ...}
+>>> r = cc.publish()
+>>> print(r.status_code)
+200
+>>> print(r.json())
+{u'task-id': u'01234567-89ab-cdef-8b0a-92e9635a47d3'}
+>>> r = cc.logout()
+>>> print(r.status_code)
+200
+>>> print(r.json())
+{u'message': u'OK'}
 
 :copyright: (c) 2016 by Dana James Traversie and Check Point Software Technologies, Ltd.
 :license: Apache 2.0, see LICENSE for more details.
-
 """
 
 __title__ = 'cpauto'
@@ -46,3 +66,11 @@ __build__ = 0x000001
 __author__ = 'Dana James Traversie'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
+
+from .core.sessions import CoreClientResult, CoreClient
+from .core.exceptions import CoreClientError
+
+from .objects.access import AccessClient
+from .objects.network import NetworkClient
+from .objects.policy import PolicyClient
+from .objects.simplegateway import SimpleGatewayClient
