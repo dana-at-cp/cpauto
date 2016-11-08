@@ -38,13 +38,13 @@ usage:
 >>> print(r.status_code)
 200
 >>> print(r.json())
-{u'last-login-was-at': {u'posix': 1478636363481, u'iso-8601': u'2016-11-08T15:19-0500'}, u'uid': u'e46e111b-7dad-4e31-a814-175de8997a48', u'sid': u'npJNuiL1UrQz_qBdcIlcrIRqsIXuXan7EBKEgnFXTlo', u'url': u'https://10.6.9.81:443/web_api', u'api-server-version': u'1', u'session-timeout': 600}
+{u'last-login-was-at': {u'posix': 1478636363481, u'iso-8601': u'2016-11-08T15:19-0500'}, u'uid': ...}
 >>> nc = cpauto.NetworkClient(cc)
 >>> r = nc.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
 >>> print(r.status_code)
 200
 >>> print(r.json())
-{u'domain': {u'domain-type': u'domain', u'name': u'SMC User', u'uid': u'41e821a0-3720-11e3-aa6e-0800200c9fde'}, u'uid': u'89bc1b86-9671-4afd-b4cb-44acf84aa8c0', u'subnet4': u'10.6.9.0', u'tags': [], u'color': u'black', u'broadcast': u'ALLOW', u'groups': [], u'mask-length4': 24, u'read-only': True, u'icon': u'NetworkObjects/network', u'name': u'net_mgmt', u'subnet-mask': u'255.255.255.0', u'nat-settings': {u'auto-rule': False}, u'comments': u'', u'meta-info': {u'creation-time': {u'posix': 1478636822549, u'iso-8601': u'2016-11-08T15:27-0500'}, u'validation-state': u'ok', u'creator': u'admin', u'lock': u'unlocked', u'last-modifier': u'admin', u'last-modify-time': {u'posix': 1478636822549, u'iso-8601': u'2016-11-08T15:27-0500'}}, u'type': u'network'}
+{u'domain': {u'domain-type': u'domain', u'name': u'SMC User', u'uid': u'41e821a0-3720-11e3-aa6e-0800200c9fde'}, ...}
 >>> r = cc.publish()
 >>> print(r.status_code)
 200
