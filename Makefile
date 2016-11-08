@@ -1,7 +1,7 @@
 .PHONY: docs
 
 clean:
-	rm -rf build dist .eggs cpauto.egg-info temp tests
+	rm -rf build dist .eggs cpauto.egg-info temp
 
 init:
 	pip install -r requirements.txt
