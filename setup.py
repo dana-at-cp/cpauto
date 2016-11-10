@@ -1,22 +1,12 @@
 """Setup script for cpauto."""
 
-from __future__ import print_function
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
-import codecs
-import os
-import sys
+
+from codecs import open
+
 import re
-
-HERE = os.path.abspath(os.path.dirname(__file__))
-
-def read(*parts):
-    """Return multiple read calls to different readable objects as a single
-    string."""
-    # intentionally *not* adding an encoding option to open
-    return codecs.open(os.path.join(HERE, *parts), 'r').read()
-
-LONG_DESCRIPTION = read('README.md')
+import sys
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -33,9 +23,21 @@ class PyTest(TestCommand):
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 
+with open('cpauto/__init__.py', 'r') as fd:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                        fd.read(), re.MULTILINE).group(1)
+
+if not version:
+    raise RuntimeError('Failed to find version number')
+
+with open('README.rst', 'r', 'utf-8') as f:
+    readme = f.read()
+
+long_description = readme
+
 setup(
     name='cpauto',
-    version='0.0.1',
+    version=version,
     url='https://github.com/dana-at-cp/cpauto',
     license='Apache Software License',
     author='Dana James Traversie',
@@ -46,7 +48,7 @@ setup(
     cmdclass={'test': PyTest},
     author_email='dtravers@checkpoint.com',
     description='Python client for Check Point R80 management server web APIs',
-    long_description=LONG_DESCRIPTION,
+    long_description=long_description,
     packages=['cpauto', 'cpauto.core', 'cpauto.objects' ],
     package_dir={'cpauto': 'cpauto'},
     include_package_data=True,
