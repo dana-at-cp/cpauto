@@ -32,3 +32,27 @@ class WebClientError(Error):
 class CoreClientError(WebClientError):
     """Exception raised when an core web client runs into trouble."""
     pass
+
+class ConnectionError(CoreClientError):
+    """A connection error occurred."""
+    pass
+
+class HTTPError(CoreClientError):
+    """An HTTP error occurred."""
+    pass
+
+class SSLError(CoreClientError):
+    """An SSL error occurred."""
+    pass
+
+class Timeout(CoreClientError):
+    """The request timed out."""
+    pass
+
+class TooManyRedirects(CoreClientError):
+    """Too many redirects."""
+    pass
+
+class InvalidURL(CoreClientError, ValueError):
+    """The URL provided was invalid."""
+    pass
