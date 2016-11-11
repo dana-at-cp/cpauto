@@ -1,7 +1,7 @@
 .PHONY: docs
 
 clean:
-	rm -rf build dist .eggs cpauto.egg-info temp
+	rm -rf build dist .eggs cpauto.egg-info temp htmlcov
 
 init:
 	pip install -r requirements.txt

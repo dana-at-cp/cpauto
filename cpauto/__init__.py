@@ -68,7 +68,15 @@ __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
 
 from .core.sessions import CoreClientResult, CoreClient
-from .core.exceptions import CoreClientError
+from .core.exceptions import (
+    CoreClientError,
+    ConnectionError,
+    HTTPError,
+    SSLError,
+    Timeout,
+    TooManyRedirects,
+    InvalidURL
+)
 
 from .objects.access import AccessClient
 from .objects.network import NetworkClient
