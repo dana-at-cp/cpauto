@@ -55,7 +55,7 @@ class CoreClient:
       200
     """
 
-    def __init__(self, user, password, mgmt_server, port=443, verify=True):
+    def __init__(self, user='', password='', mgmt_server='', port=443, verify=True):
         self.__last_login_result = None
         self.__user = user
         self.__password = password
@@ -76,7 +76,6 @@ class CoreClient:
 
     def http_post(self, endpoint, send_sid=True, payload={}):
         """Makes an HTTP post to the specified API endpoint using user supplied data.
-        Returns :class:`CoreClientResult <CoreClientResult>` object.
 
         :param endpoint: The API endpoint (e.g. /login).
         :param send_sid: Send the session ID as a header when true.
@@ -103,12 +102,11 @@ class CoreClient:
         return CoreClientResult(r.status_code, r.json())
 
     def merge_payloads(self, payload_a, payload_b):
-        """Merges the contents of two payloads (dictionaries). Returns the
-        contents of the two original payloads as a single payload.
+        """Merges the contents of two payloads (dictionaries).
 
         :param payload_a: A payload to merge
         :param payload_b: Another payload to merge
-        :rtype: A single payload (dictionary) with the contents of the two original payloads
+        :returns: A single payload (dictionary) with the contents of the two original payloads
         """
         payload_c = payload_a.copy()
         payload_c.update(payload_b)
@@ -116,13 +114,13 @@ class CoreClient:
 
     def login(self, params={}):
         """Login to the R80 Web API server and store the results
-        of the request as a class attribute. Returns a
-        :class:`CoreClientResult <CoreClientResult>` object.
+        of the request as a class attribute.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/login
 
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/login
         payload = { 'user': self.__user,
                     'password': self.__password }
         if params:
@@ -133,22 +131,22 @@ class CoreClient:
 
     def logout(self):
         """Logout of the R80 Web API server and invalidate the session.
-        Returns a :class:`CoreClientResult <CoreClientResult>` object.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/logout
 
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/logout
         return self.http_post('logout')
 
     def publish(self, uid=None):
-        """Makes all changes made visible to other users. Returns a
-        :class:`CoreClientResult <CoreClientResult>` object.
+        """Makes all changes made visible to other users.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/publish
 
         :param uid: (optional) Specify a different session unique
             identifier to publish.
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/publish
         payload = {}
         if uid is not None:
             payload['uid'] = uid
@@ -156,23 +154,23 @@ class CoreClient:
 
     def discard(self, uid=None):
         """Discards all changes made and removes them from the database.
-        Returns a :class:`CoreClientResult <CoreClientResult>` object.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/discard
 
         :param uid: (optional) Specify a different sessions unique
             identifier to discard.
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/discard
         payload = {}
         if uid is not None:
             payload['uid'] = uid
         return self.http_post('discard', payload=payload)
 
     def keepalive(self):
-        """Keeps the session alive and valid. Returns a
-        :class:`CoreClientResult <CoreClientResult>` object.
+        """Keeps the session alive and valid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/keepalive
 
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/keepalive
         return self.http_post('keepalive')

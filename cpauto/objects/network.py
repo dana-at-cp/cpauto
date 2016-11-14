@@ -19,99 +19,81 @@
 
 """This module contains the classes needed to manage network objects."""
 
+from ._common import _CommonClient
+
 class NetworkClient:
     def __init__(self, core_client):
         self.__core_client = core_client
+        self.__common_client = _CommonClient(core_client)
 
-    def add(self, name, params={}):
-        """Adds a network. Returns CoreClientResult object.
+    def add(self, name='', params={}):
+        """Adds a network.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-network
 
         :param name: A name for the new network.
         :param params: A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-network
         payload = { 'name': name }
         if params:
             payload = self.__core_client.merge_payloads(payload, params)
         return self.__core_client.http_post('add-network', payload=payload)
 
-    def show(self, name=None, uid=None, details_level=None):
+    def show(self, name='', uid='', details_level=''):
         """Shows details of a network with the specified name
-        or uid. Returns a CoreClientResult object.
+        or uid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-network
 
         :param name: (optional) The name of an existing network.
         :param uid: (optional) The unique identifier of an existing network.
         :param details_level: (optional) The level of detail to show. Default
-        value is 'standard' and the other options are: 'uid' or 'full'
+            value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/show-network
-        payload = {}
-        if name is not None:
-            payload['name'] = name
-        if uid is not None:
-            payload['uid'] = uid
-        if details_level is not None:
-            payload['details-level'] = details_level
-        return self.__core_client.http_post('show-network', payload=payload)
+        return self.__common_client._show('show-network', name=name, uid=uid, details_level=details_level)
 
-    def set(self, name=None, uid=None, params={}):
+    def set(self, name='', uid='', params={}):
         """Sets new values for an existing network with the specified
-        name or uid. Returns a CoreClientResult object.
+        name or uid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-network
 
         :param name: (optional) The name of an existing network.
         :param uid: (optional) The unique identifier of an existing network.
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/set-network
-        payload = {}
-        if name is not None:
-            payload['name'] = name
-        if uid is not None:
-            payload['uid'] = uid
-        if params:
-            payload = self.__core_client.merge_payloads(payload, params)
-        return self.__core_client.http_post('set-network', payload=payload)
+        return self.__common_client._set('set-network', name=name, uid=uid, params=params)
 
-    def delete(self, name=None, uid=None, params={}):
+    def delete(self, name='', uid='', params={}):
         """Deletes an existing network with the specified
-        name or uid. Returns a CoreClientResult object.
+        name or uid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-network
 
         :param name: (optional) The name of an existing network.
         :param uid: (optional) The unique identifier of an existing network.
         :param params: (optional) A dictionary of additional, supported parameter name$
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-network
-        payload = {}
-        if name is not None:
-            payload['name'] = name
-        if uid is not None:
-            payload['uid'] = uid
-        if params:
-            payload = self.__core_client.merge_payloads(payload, params)
-        return self.__core_client.http_post('delete-network', payload=payload)
+        return self.__common_client._delete('delete-network', name=name, uid=uid, params=params)
 
     def show_all(self, limit=50, offset=0, order=[], details_level=''):
-        """Shows all networks with some reasonable limitations. Returns
-        a CoreClientResult object.
+        """Shows all networks with some reasonable limitations.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-networks
 
         :param limit: (optional) Limit the total number of networks shown.
-        The default value is 50 and allowed values are in the range 1 to 500.
+            The default value is 50 and allowed values are in the range 1 to 500.
         :param offset: (optional) Skip a number of networks in the results
-        before they are shown. Default value is 0.
+            before they are shown. Default value is 0.
         :param order: (optional) Sort the results by the specified field. The
-        default is a random order.
+            default is a random order.
         :param details_level: (optional) The level of detail to show. Default
-        value is 'standard' and the other options are: 'uid' or 'full'
+            value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/show-networks
-        payload = { 'limit': limit, 'offset': offset }
-        if order:
-            payload['order'] = order
-        if details_level:
-            payload['details-level'] = details_level
-        return self.__core_client.http_post('show-networks', payload=payload)
+        return self.__common_client._show_all('show-networks', limit=limit,
+            offset=offset, order=order, details_level=details_level)
