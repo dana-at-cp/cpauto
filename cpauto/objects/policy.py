@@ -21,10 +21,11 @@
 
 from ._common import _CommonClient
 
-class PolicyClient:
+class Policy:
+    """Manage policy."""
+
     def __init__(self, core_client):
         self.__core_client = core_client
-        self.__common_client = _CommonClient(core_client)
 
     def install(self, access=True, threat=True, policy_package='', targets=''):
         """Installs the specified policy package or the standard policy package.
@@ -45,6 +46,13 @@ class PolicyClient:
         if targets:
             payload['targets'] = targets
         return self.__core_client.http_post('install-policy', payload=payload)
+
+class PolicyPackage:
+    """Manage policy packages."""
+
+    def __init__(self, core_client):
+        self.__core_client = core_client
+        self.__common_client = _CommonClient(core_client)
 
     def add(self, name='', params={}):
         """Adds a new policy package.

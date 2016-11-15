@@ -18,7 +18,7 @@ def test_add(core_client, mgmt_server_base_uri, name, params):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        nc = cpauto.NetworkClient(core_client)
+        nc = cpauto.Network(core_client)
         r = nc.add(name=name, params=params)
 
         assert r.status_code == 200
@@ -38,7 +38,7 @@ def test_show(core_client, mgmt_server_base_uri, name, uid, details_level):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        nc = cpauto.NetworkClient(core_client)
+        nc = cpauto.Network(core_client)
         r = nc.show(name=name, uid=uid, details_level=details_level)
 
         assert r.status_code == 200
@@ -56,7 +56,7 @@ def test_set(core_client, mgmt_server_base_uri, name, uid, params):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        nc = cpauto.NetworkClient(core_client)
+        nc = cpauto.Network(core_client)
         r = nc.set(name=name, uid=uid, params=params)
 
         assert r.status_code == 200
@@ -76,7 +76,7 @@ def test_delete(core_client, mgmt_server_base_uri, name, uid, params):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        nc = cpauto.NetworkClient(core_client)
+        nc = cpauto.Network(core_client)
         r = nc.delete(name=name, uid=uid, params=params)
 
         assert r.status_code == 200
@@ -96,7 +96,7 @@ def test_show_all(core_client, mgmt_server_base_uri,
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        nc = cpauto.NetworkClient(core_client)
+        nc = cpauto.Network(core_client)
         r = nc.show_all(limit=limit, offset=offset,
             order=order, details_level=details_level)
 

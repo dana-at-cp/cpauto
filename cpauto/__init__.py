@@ -39,8 +39,8 @@ usage:
 200
 >>> print(r.json())
 {u'last-login-was-at': {u'posix': 1478636363481, u'iso-8601': u'2016-11-08T15:19-0500'}, u'uid': ...}
->>> nc = cpauto.NetworkClient(cc)
->>> r = nc.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
+>>> n = cpauto.Network(cc)
+>>> r = n.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
 >>> print(r.status_code)
 200
 >>> print(r.json())
@@ -78,9 +78,9 @@ from .core.exceptions import (
     InvalidURL
 )
 
-from .objects.access import AccessClient
-from .objects.group import GroupClient
-from .objects.host import HostClient
-from .objects.network import NetworkClient
-from .objects.policy import PolicyClient
-from .objects.simplegateway import SimpleGatewayClient
+from .objects.access import AccessRule
+from .objects.group import Group
+from .objects.host import Host
+from .objects.network import Network
+from .objects.policy import Policy, PolicyPackage
+from .objects.simplegateway import SimpleGateway

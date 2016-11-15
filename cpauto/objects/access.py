@@ -19,20 +19,23 @@
 
 """This module contains the classes needed to manage access control and NAT objects."""
 
-class AccessClient:
+class AccessRule:
+    """Manage access rules."""
+
     def __init__(self, core_client):
         self.__core_client = core_client
 
-    def add_rule(self, layer, position, params={}):
-        """Adds an access rule. Returns CoreClientResult object.
+    def add(self, layer="", position="", params={}):
+        """Adds an access rule.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-access-rule
 
         :param layer: Layer that the rule belongs to identified by name or UID.
         :param position: Position in the rulebase. Can be specified in various ways.
-        :type position: string or dict (e.g. '1', 'top', 'bottom', or "{ 'above': 'Section One' }")
+        :type position: integer, string or dict (e.g. 1, 'top', 'bottom', or "{ 'above': 'Section One' }")
         :param params: (optional) A dictionary of additional, supported parameter names and values.
-        :rtype: cpauto.core.sessions.CoreClientResult
+        :rtype: CoreClientResult
         """
-        # https://sc1.checkpoint.com/documents/R80/APIs/#web/add-access-rule
         payload = { 'layer': layer, 'position': position }
         if params:
             payload = self.__core_client.merge_payloads(payload, params)

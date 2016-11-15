@@ -21,7 +21,9 @@
 
 from ._common import _CommonClient
 
-class SimpleGatewayClient:
+class SimpleGateway:
+    """Manage simple gateways."""
+
     def __init__(self, core_client):
         self.__core_client = core_client
         self.__common_client = _CommonClient(core_client)
