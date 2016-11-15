@@ -79,6 +79,7 @@ from .core.exceptions import (
 )
 
 from .objects.access import AccessClient
+from .objects.group import GroupClient
 from .objects.host import HostClient
 from .objects.network import NetworkClient
 from .objects.policy import PolicyClient
