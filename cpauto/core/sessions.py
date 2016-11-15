@@ -138,7 +138,7 @@ class CoreClient:
         """
         return self.http_post('logout')
 
-    def publish(self, uid=None):
+    def publish(self, uid=""):
         """Makes all changes made visible to other users.
 
         https://sc1.checkpoint.com/documents/R80/APIs/#web/publish
@@ -148,11 +148,11 @@ class CoreClient:
         :rtype: CoreClientResult
         """
         payload = {}
-        if uid is not None:
+        if uid:
             payload['uid'] = uid
         return self.http_post('publish', payload=payload)
 
-    def discard(self, uid=None):
+    def discard(self, uid=""):
         """Discards all changes made and removes them from the database.
 
         https://sc1.checkpoint.com/documents/R80/APIs/#web/discard
@@ -162,7 +162,7 @@ class CoreClient:
         :rtype: CoreClientResult
         """
         payload = {}
-        if uid is not None:
+        if uid:
             payload['uid'] = uid
         return self.http_post('discard', payload=payload)
 
