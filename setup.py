@@ -33,7 +33,10 @@ if not version:
 with open('README.rst', 'r', 'utf-8') as f:
     readme = f.read()
 
-long_description = readme
+with open('HISTORY.rst', 'r', 'utf-8') as f:
+    history = f.read()
+
+long_description = readme + '\n\n' + history
 
 setup(
     name='cpauto',
