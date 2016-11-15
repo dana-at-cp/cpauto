@@ -1,6 +1,8 @@
 cpauto
 ======
 
+|Build Status|
+
 cpauto is a client library, written in Python, for the web APIs exposed
 via Check Point R80 management server software. The Check Point R80
 management APIs provide automation and integration capabilities that
@@ -20,8 +22,8 @@ Behold, the power of cpauto:
     200
     >>> print(r.json())
     {u'last-login-was-at': {u'posix': 1478636363481, u'iso-8601': u'2016-11-08T15:19-0500'}, u'uid': ...}
-    >>> nc = cpauto.NetworkClient(cc)
-    >>> r = nc.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
+    >>> n = cpauto.Network(cc)
+    >>> r = n.add('net_mgmt', { 'subnet': '10.6.9.0', 'subnet-mask': '255.255.255.0' })
     >>> print(r.status_code)
     200
     >>> print(r.json())
@@ -47,3 +49,6 @@ To install cpauto, simply:
     $ pip install cpauto
 
 Enjoy.
+
+.. |Build Status| image:: https://travis-ci.org/dana-at-cp/cpauto.svg?branch=master
+   :target: https://travis-ci.org/dana-at-cp/cpauto

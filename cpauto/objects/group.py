@@ -14,82 +14,82 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cpauto.objects.network
-# ~~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.group
+# ~~~~~~~~~~~~~~~~~~~~
 
-"""This module contains the classes needed to manage network objects."""
+"""This module contains the classes needed to manage group objects."""
 
 from ._common import _CommonClient
 
-class Network:
-    """Manage networks."""
+class Group:
+    """Manage groups."""
 
     def __init__(self, core_client):
         self.__core_client = core_client
         self.__common_client = _CommonClient(core_client)
 
     def add(self, name='', params={}):
-        """Adds a network.
+        """Adds a group.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-network
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-group
 
-        :param name: A name for the new network.
+        :param name: A name for the new group.
         :param params: A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
         payload = { 'name': name }
         if params:
             payload = self.__core_client.merge_payloads(payload, params)
-        return self.__core_client.http_post('add-network', payload=payload)
+        return self.__core_client.http_post('add-group', payload=payload)
 
     def show(self, name='', uid='', details_level=''):
-        """Shows details of a network with the specified name
+        """Shows details of a group with the specified name
         or uid.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-network
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-group
 
-        :param name: (optional) The name of an existing network.
-        :param uid: (optional) The unique identifier of an existing network.
+        :param name: (optional) The name of an existing group.
+        :param uid: (optional) The unique identifier of an existing group.
         :param details_level: (optional) The level of detail to show. Default
             value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        return self.__common_client._show('show-network', name=name, uid=uid, details_level=details_level)
+        return self.__common_client._show('show-group', name=name, uid=uid, details_level=details_level)
 
     def set(self, name='', uid='', params={}):
-        """Sets new values for an existing network with the specified
+        """Sets new values for an existing group with the specified
         name or uid.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-network
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-group
 
-        :param name: (optional) The name of an existing network.
-        :param uid: (optional) The unique identifier of an existing network.
+        :param name: (optional) The name of an existing group.
+        :param uid: (optional) The unique identifier of an existing group.
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return self.__common_client._set('set-network', name=name, uid=uid, params=params)
+        return self.__common_client._set('set-group', name=name, uid=uid, params=params)
 
     def delete(self, name='', uid='', params={}):
-        """Deletes an existing network with the specified
+        """Deletes an existing group with the specified
         name or uid.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-network
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-group
 
-        :param name: (optional) The name of an existing network.
-        :param uid: (optional) The unique identifier of an existing network.
+        :param name: (optional) The name of an existing group.
+        :param uid: (optional) The unique identifier of an existing group.
         :param params: (optional) A dictionary of additional, supported parameter name$
         :rtype: CoreClientResult
         """
-        return self.__common_client._delete('delete-network', name=name, uid=uid, params=params)
+        return self.__common_client._delete('delete-group', name=name, uid=uid, params=params)
 
     def show_all(self, limit=50, offset=0, order=[], details_level=''):
-        """Shows all networks with some reasonable limitations.
+        """Shows all groups with some reasonable limitations.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-networks
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-groups
 
-        :param limit: (optional) Limit the total number of networks shown.
+        :param limit: (optional) Limit the total number of groups shown.
             The default value is 50 and allowed values are in the range 1 to 500.
-        :param offset: (optional) Skip a number of networks in the results
+        :param offset: (optional) Skip a number of groups in the results
             before they are shown. Default value is 0.
         :param order: (optional) Sort the results by the specified field. The
             default is a random order.
@@ -97,5 +97,5 @@ class Network:
             value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        return self.__common_client._show_all('show-networks', limit=limit,
+        return self.__common_client._show_all('show-groups', limit=limit,
             offset=offset, order=order, details_level=details_level)

@@ -14,26 +14,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cpauto.objects.simplegateway
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# cpauto.objects.host
+# ~~~~~~~~~~~~~~~~~~~
 
-"""This module contains the classes needed to manage simple gateway objects."""
+"""This module contains the classes needed to manage host objects."""
 
 from ._common import _CommonClient
 
-class SimpleGateway:
-    """Manage simple gateways."""
+class Host:
+    """Manage hosts."""
 
     def __init__(self, core_client):
         self.__core_client = core_client
         self.__common_client = _CommonClient(core_client)
 
     def add(self, name='', ip_address='', ipv4_address='', ipv6_address='', params={}):
-        """Adds a simple gateway.
+        """Adds a host.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-simple-gateway
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/add-host
 
-        :param name: A name for the new simple gateway.
+        :param name: A name for the new host.
         :param ip_address: (optional) IPv4 or IPv6 address. If both addresses are
             required use ipv4_address and ipv6_address fields explicitly.
         :param ipv4_address: (optional) IPv4 address.
@@ -51,54 +51,56 @@ class SimpleGateway:
             payload['ipv6-address'] = ipv6_address
         if params:
             payload = self.__core_client.merge_payloads(payload, params)
-        return self.__core_client.http_post('add-simple-gateway', payload=payload)
-
-    def delete(self, name='', uid='', params={}):
-        """Deletes a simple gateway.
-
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-simple-gateway
-
-        :param name: (optional) A simple gateway name.
-        :param uid: (optional) A simple gateway unique identifier instead of name.
-        :rtype: CoreClientResult
-        """
-        return self.__common_client._delete('delete-simple-gateway', name=name, uid=uid, params=params)
+        return self.__core_client.http_post('add-host', payload=payload)
 
     def show(self, name='', uid='', details_level=''):
-        """Shows details of a simple gateway with the specified name or unique
-        identifier.
+        """Shows details of a host with the specified name
+        or uid.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-simple-gateway
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-host
 
-        :param name: (optional) A simple gateway name.
-        :param uid: (optional) A simple gateway unique identifier instead of name.
+        :param name: (optional) The name of an existing host.
+        :param uid: (optional) The unique identifier of an existing host.
         :param details_level: (optional) The level of detail to show. Default
             value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        return self.__common_client._show('show-simple-gateway', name=name, uid=uid, details_level=details_level)
+        return self.__common_client._show('show-host', name=name, uid=uid, details_level=details_level)
 
     def set(self, name='', uid='', params={}):
-        """Sets new values for an existing simple gateway with the specified
+        """Sets new values for an existing host with the specified
         name or uid.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-simple-gateway
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-host
 
-        :param name: (optional) The name of an existing simple gateway.
-        :param uid: (optional) The unique identifier of an existing simple gateway.
+        :param name: (optional) The name of an existing host.
+        :param uid: (optional) The unique identifier of an existing host.
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return self.__common_client._set('set-simple-gateway', name=name, uid=uid, params=params)
+        return self.__common_client._set('set-host', name=name, uid=uid, params=params)
+
+    def delete(self, name='', uid='', params={}):
+        """Deletes an existing host with the specified
+        name or uid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/delete-host
+
+        :param name: (optional) The name of an existing host.
+        :param uid: (optional) The unique identifier of an existing host.
+        :param params: (optional) A dictionary of additional, supported parameter name$
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._delete('delete-host', name=name, uid=uid, params=params)
 
     def show_all(self, limit=50, offset=0, order=[], details_level=''):
-        """Shows all simple gateways with some reasonable limitations.
+        """Shows all hosts with some reasonable limitations.
 
-        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-simple-gateways
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-hosts
 
-        :param limit: (optional) Limit the total number of simple gateways shown.
+        :param limit: (optional) Limit the total number of hosts shown.
             The default value is 50 and allowed values are in the range 1 to 500.
-        :param offset: (optional) Skip a number of simple gateways in the results
+        :param offset: (optional) Skip a number of hosts in the results
             before they are shown. Default value is 0.
         :param order: (optional) Sort the results by the specified field. The
             default is a random order.
@@ -106,5 +108,5 @@ class SimpleGateway:
             value is 'standard' and the other options are: 'uid' or 'full'
         :rtype: CoreClientResult
         """
-        return self.__common_client._show_all('show-simple-gateways', limit=limit,
+        return self.__common_client._show_all('show-hosts', limit=limit,
             offset=offset, order=order, details_level=details_level)
