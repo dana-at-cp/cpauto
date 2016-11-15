@@ -40,7 +40,7 @@ def test_http_post_exceptions(core_client, mgmt_server_base_uri, resource, caugh
 
 @pytest.mark.parametrize("params", [
     ({}),
-    ({ "continue-last-session": "True"}),
+    ({ "continue-last-session": True}),
     ({ "session-name": "mysessionname", "session-timeout": 900}),
 ])
 def test_login(core_client, mgmt_server_base_uri, params):
@@ -57,7 +57,7 @@ def test_login(core_client, mgmt_server_base_uri, params):
         assert r.json() == resp_body
 
 @pytest.mark.parametrize("uid", [
-    (None),
+    (""),
     ("someuid"),
 ])
 def test_publish(core_client, mgmt_server_base_uri, uid):
@@ -74,7 +74,7 @@ def test_publish(core_client, mgmt_server_base_uri, uid):
         assert r.json() == resp_body
 
 @pytest.mark.parametrize("uid", [
-    (None),
+    (""),
     ("someuid"),
 ])
 def test_discard(core_client, mgmt_server_base_uri, uid):
