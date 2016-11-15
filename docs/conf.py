@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # cpauto documentation build configuration file, created by
-# sphinx-quickstart on Tue Nov  8 14:41:24 2016.
+# sphinx-quickstart on Tue Nov 15 11:58:53 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -123,7 +123,7 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'nature'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

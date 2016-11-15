@@ -19,7 +19,7 @@ def test_add(core_client, mgmt_server_base_uri, name, ip_address, ipv4_address, 
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        c = cpauto.HostClient(core_client)
+        c = cpauto.Host(core_client)
         r = c.add(name=name, ip_address=ip_address,
                   ipv4_address=ipv4_address, ipv6_address=ipv6_address,
                   params=params)
@@ -41,7 +41,7 @@ def test_show(core_client, mgmt_server_base_uri, name, uid, details_level):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        c = cpauto.HostClient(core_client)
+        c = cpauto.Host(core_client)
         r = c.show(name=name, uid=uid, details_level=details_level)
 
         assert r.status_code == 200
@@ -59,7 +59,7 @@ def test_set(core_client, mgmt_server_base_uri, name, uid, params):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        c = cpauto.HostClient(core_client)
+        c = cpauto.Host(core_client)
         r = c.set(name=name, uid=uid, params=params)
 
         assert r.status_code == 200
@@ -79,7 +79,7 @@ def test_delete(core_client, mgmt_server_base_uri, name, uid, params):
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        c = cpauto.HostClient(core_client)
+        c = cpauto.Host(core_client)
         r = c.delete(name=name, uid=uid, params=params)
 
         assert r.status_code == 200
@@ -99,7 +99,7 @@ def test_show_all(core_client, mgmt_server_base_uri,
                  json=resp_body, status=200,
                  content_type='application/json')
 
-        c = cpauto.HostClient(core_client)
+        c = cpauto.Host(core_client)
         r = c.show_all(limit=limit, offset=offset,
             order=order, details_level=details_level)
 
