@@ -78,7 +78,7 @@ from .core.exceptions import (
     InvalidURL
 )
 
-from .objects.access import AccessRule
+from .objects.access import AccessRule, AccessSection, AccessLayer, NATRule, NATSection
 from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network
