@@ -33,7 +33,7 @@ https://sc1.checkpoint.com/documents/R80/APIs/#introduction
 usage:
 
 >>> import cpauto
->>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81', verify=False)
+>>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81')
 >>> r = cc.login()
 >>> print(r.status_code)
 200
@@ -61,13 +61,14 @@ usage:
 """
 
 __title__ = 'cpauto'
-__version__ = '0.0.1'
-__build__ = 0x000001
+__version__ = '0.0.2'
+__build__ = 0x000002
 __author__ = 'Dana James Traversie'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
 
 from .core.sessions import CoreClientResult, CoreClient
+from .core.misc import Misc
 from .core.exceptions import (
     CoreClientError,
     ConnectionError,
@@ -78,7 +79,7 @@ from .core.exceptions import (
     InvalidURL
 )
 
-from .objects.access import AccessRule
+from .objects.access import AccessRule, AccessSection, AccessLayer, NATRule, NATSection
 from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network

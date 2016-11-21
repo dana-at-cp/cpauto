@@ -9,7 +9,7 @@ Behold, the power of cpauto:
 
 ```
 >>> import cpauto
->>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81', verify=False)
+>>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81')
 >>> r = cc.login()
 >>> print(r.status_code)
 200
