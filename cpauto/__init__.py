@@ -33,7 +33,7 @@ https://sc1.checkpoint.com/documents/R80/APIs/#introduction
 usage:
 
 >>> import cpauto
->>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81', verify=False)
+>>> cc = cpauto.CoreClient('admin', 'vpn123', '10.6.9.81')
 >>> r = cc.login()
 >>> print(r.status_code)
 200
@@ -68,6 +68,7 @@ __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
 
 from .core.sessions import CoreClientResult, CoreClient
+from .core.misc import Misc
 from .core.exceptions import (
     CoreClientError,
     ConnectionError,
