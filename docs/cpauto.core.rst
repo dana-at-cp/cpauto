@@ -12,6 +12,14 @@ cpauto.core.exceptions module
     :undoc-members:
     :show-inheritance:
 
+cpauto.core.misc module
+-----------------------
+
+.. automodule:: cpauto.core.misc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 cpauto.core.sessions module
 ---------------------------
 

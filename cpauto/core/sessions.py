@@ -68,7 +68,7 @@ class CoreClient:
         return uri
 
     def __build_headers(self, send_sid=True):
-        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.1' }
+        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.2' }
         if send_sid and self.__last_login_result is not None:
             last_login_json = self.__last_login_result.json()
             headers['x-chkp-sid'] = last_login_json['sid']
