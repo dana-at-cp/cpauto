@@ -12,6 +12,14 @@ cpauto.objects.access module
     :undoc-members:
     :show-inheritance:
 
+cpauto.objects.application module
+---------------------------------
+
+.. automodule:: cpauto.objects.application
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 cpauto.objects.group module
 ---------------------------
 

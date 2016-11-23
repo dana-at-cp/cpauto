@@ -80,6 +80,7 @@ from .core.exceptions import (
 )
 
 from .objects.access import AccessRule, AccessSection, AccessLayer, NATRule, NATSection
+from .objects.application import App, AppCategory, AppGroup
 from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network
