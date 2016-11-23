@@ -44,6 +44,14 @@ cpauto.objects.policy module
     :undoc-members:
     :show-inheritance:
 
+cpauto.objects.service module
+-----------------------------
+
+.. automodule:: cpauto.objects.service
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 cpauto.objects.simplegateway module
 -----------------------------------
 

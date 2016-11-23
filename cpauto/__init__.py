@@ -84,4 +84,13 @@ from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network
 from .objects.policy import Policy, PolicyPackage
+from .objects.service import (
+    ServiceTCP,
+    ServiceUDP,
+    ServiceSCTP,
+    ServiceOther,
+    ServiceGroup,
+    ServiceDCERPC,
+    ServiceRPC
+)
 from .objects.simplegateway import SimpleGateway

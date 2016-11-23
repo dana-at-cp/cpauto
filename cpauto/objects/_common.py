@@ -23,6 +23,12 @@ class _CommonClient:
     def __init__(self, core_client):
         self.__core_client = core_client
 
+    def _add(self, endpoint, name='', params={}):
+        payload = { 'name': name }
+        if params:
+            payload = self.__core_client.merge_payloads(payload, params)
+        return self.__core_client.http_post(endpoint, payload=payload)
+
     def _show(self, endpoint, name='', uid='', details_level=''):
         payload = {}
         if name:
