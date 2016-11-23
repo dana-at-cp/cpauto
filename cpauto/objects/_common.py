@@ -29,7 +29,7 @@ class _CommonClient:
             payload = self.__core_client.merge_payloads(payload, params)
         return self.__core_client.http_post(endpoint, payload=payload)
 
-    def _show(self, endpoint, name='', uid='', details_level=''):
+    def _show(self, endpoint, name='', uid='', details_level='', params={}):
         payload = {}
         if name:
             payload['name'] = name
@@ -37,6 +37,8 @@ class _CommonClient:
             payload['uid'] = uid
         if details_level:
             payload['details-level'] = details_level
+        if params:
+            payload = self.__core_client.merge_payloads(payload, params)
         return self.__core_client.http_post(endpoint, payload=payload)
 
     def _set(self, endpoint, name='', uid='', params={}):
