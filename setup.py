@@ -44,7 +44,7 @@ setup(
     url='https://github.com/dana-at-cp/cpauto',
     license='Apache Software License',
     author='Dana James Traversie',
-    tests_require=['pytest', 'pytest-cov'],
+    tests_require=['pytest', 'pytest-cov', 'responses'],
     install_requires=[
         'requests>=2.11.1',
         ],
@@ -61,8 +61,8 @@ setup(
     package_data={'': ['LICENSE', 'NOTICE']},
     classifiers=[
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5',
         'Development Status :: 4 - Beta',
         'Natural Language :: English',
         'Environment :: Web Environment',

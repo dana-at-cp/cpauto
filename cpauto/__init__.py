@@ -61,8 +61,8 @@ usage:
 """
 
 __title__ = 'cpauto'
-__version__ = '0.0.2'
-__build__ = 0x000002
+__version__ = '0.0.3'
+__build__ = 0x000003
 __author__ = 'Dana James Traversie'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
@@ -80,8 +80,18 @@ from .core.exceptions import (
 )
 
 from .objects.access import AccessRule, AccessSection, AccessLayer, NATRule, NATSection
+from .objects.application import App, AppCategory, AppGroup
 from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network
 from .objects.policy import Policy, PolicyPackage
+from .objects.service import (
+    ServiceTCP,
+    ServiceUDP,
+    ServiceSCTP,
+    ServiceOther,
+    ServiceGroup,
+    ServiceDCERPC,
+    ServiceRPC
+)
 from .objects.simplegateway import SimpleGateway
