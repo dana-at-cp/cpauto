@@ -3,6 +3,17 @@
 Release History
 ---------------
 
+0.0.3 (2016-11-23)
+++++++++++++++++++
+
+**New Features**
+
+- Full support for service and application objects.
+
+**Miscellaneous**
+
+- All code confirmed to work with Python versions 2.7, 3.5, and in between.
+
 0.0.2 (2016-11-21)
 ++++++++++++++++++
 
