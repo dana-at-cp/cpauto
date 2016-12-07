@@ -28,6 +28,8 @@ from .exceptions import (
     InvalidURL
 )
 
+from ..objects._common import _CommonClient
+
 import requests
 
 class CoreClientResult:
@@ -174,3 +176,102 @@ class CoreClient:
         :rtype: CoreClientResult
         """
         return self.http_post('keepalive')
+
+class Session:
+    """Manage sessions."""
+
+    def __init__(self, core_client):
+        self.__core_client = core_client
+        self.__common_client = _CommonClient(core_client)
+
+    def switch(self, uid=""):
+        """Switch sessions.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/switch-session
+
+        :param uid: A session unique identifier.
+        :rtype: CoreClientResult
+        """
+        payload = { 'uid': uid }
+        return self.__core_client.http_post('switch-session', payload=payload)
+
+    def show(self, uid=""):
+        """Shows details of current session or a session with
+        the specified uid.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-session
+
+        :param uid: (optional) The unique identifier of an existing session.
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._show('show-session', name="", uid=uid, details_level="")
+
+    def set(self, params={}):
+        """Sets new values for certain parameters of the current session.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-session
+
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._set('set-session', name="", uid="", params=params)
+
+    def continue_in_sc(self, uid=""):
+        """Logout from existing session. The session will be continued next time your open
+        SmartConsole. In case 'uid' is not provided, use current session. In order for the
+        session to pass successfully to SmartConsole, make sure you don't have any other
+        active GUI sessions.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/continue-session-in-smartconsole
+
+        :param uid: (optional) The unique identifier of an existing session.
+        :rtype: CoreClientResult
+        """
+        payload = {}
+        if uid:
+            payload['uid'] = uid
+        return self.__core_client.http_post('continue-session-in-smartconsole', payload=payload)
+
+    def show_all(self, limit=50, offset=0, order=[], details_level=''):
+        """Shows all sessions with some reasonable limitations.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-sessions
+
+        :param limit: (optional) Limit the total number of sessions shown.
+            The default value is 50 and allowed values are in the range 1 to 500.
+        :param offset: (optional) Skip a number of sessions in the results
+            before they are shown. Default value is 0.
+        :param order: (optional) Sort the results by the specified field. The
+            default is a random order.
+        :param details_level: (optional) The level of detail to show. Default
+            value is 'standard' and the other options are: 'uid' or 'full'
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._show_all('show-sessions', limit=limit,
+            offset=offset, order=order, details_level=details_level)
+
+class LoginMessage:
+    """Manage login message."""
+
+    def __init__(self, core_client):
+        self.__core_client = core_client
+        self.__common_client = _CommonClient(core_client)
+
+    def show(self):
+        """Shows details of current login message.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/show-login-message
+
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._show('show-login-message', name="", uid="", details_level="")
+
+    def set(self, params={}):
+        """Sets new values for current login message.
+
+        https://sc1.checkpoint.com/documents/R80/APIs/#web/set-login-message
+
+        :param params: (optional) A dictionary of additional, supported parameter names and values.
+        :rtype: CoreClientResult
+        """
+        return self.__common_client._set('set-login-message', name="", uid="", params=params)
