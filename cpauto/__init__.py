@@ -67,7 +67,7 @@ __author__ = 'Dana James Traversie'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
 
-from .core.sessions import CoreClientResult, CoreClient
+from .core.sessions import CoreClientResult, CoreClient, LoginMessage, Session
 from .core.misc import Misc
 from .core.exceptions import (
     CoreClientError,
