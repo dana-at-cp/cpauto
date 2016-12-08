@@ -15,6 +15,7 @@ class PyTest(TestCommand):
             '--strict',
             '--verbose',
             '--tb=long',
+            '--slow',
             'tests']
         self.test_suite = True
 

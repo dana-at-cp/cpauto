@@ -33,6 +33,10 @@ class CoreClientError(WebClientError):
     """Exception raised when an core web client runs into trouble."""
     pass
 
+class WaitOnTaskError(CoreClientError):
+    """An error occurred whilst waiting on a task or tasks."""
+    pass
+
 class ConnectionError(CoreClientError):
     """A connection error occurred."""
     pass

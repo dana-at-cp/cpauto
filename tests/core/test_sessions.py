@@ -61,17 +61,39 @@ def test_login(core_client, mgmt_server_base_uri, params):
     ("someuid"),
 ])
 def test_publish(core_client, mgmt_server_base_uri, uid):
-    endpoint = mgmt_server_base_uri + 'publish'
+    # positive test
+    endpoint_0 = mgmt_server_base_uri + 'publish'
+    resp_body_0 = {"task-id": "01234567-89ab-cdef-a930-8c37a59972b3"}
+    endpoint_1 = mgmt_server_base_uri + 'show-task'
+    resp_body_1 = {'tasks': [{'task-id': '01234567-89ab-cdef-a930-8c37a59972b3', 'status': 'succeeded'}]}
     with responses.RequestsMock() as rsps:
-        resp_body = {'foo': 'bar', 'message': 'OK'}
-        rsps.add(responses.POST, endpoint,
-                 json=resp_body, status=200,
+        rsps.add(responses.POST, endpoint_0,
+                 json=resp_body_0, status=200,
+                 content_type='application/json')
+        rsps.add(responses.POST, endpoint_1,
+                 json=resp_body_1, status=200,
                  content_type='application/json')
 
         r = core_client.publish(uid=uid)
 
         assert r.status_code == 200
-        assert r.json() == resp_body
+        assert r.json() == resp_body_1
+
+    # negative test
+    endpoint_0 = mgmt_server_base_uri + 'publish'
+    resp_body_0 = {"task-id": "01234567-89ab-cdef-a930-8c37a59972b3"}
+    endpoint_1 = mgmt_server_base_uri + 'show-task'
+    resp_body_1 = {"foo": "bar", "message": "Server Busy"}
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.POST, endpoint_0,
+                 json=resp_body_0, status=200,
+                 content_type='application/json')
+        rsps.add(responses.POST, endpoint_1,
+                 json=resp_body_1, status=500,
+                 content_type='application/json')
+
+        with pytest.raises(cpauto.WaitOnTaskError):
+            r = core_client.publish(uid=uid)
 
 @pytest.mark.parametrize("uid", [
     (""),
