@@ -7,10 +7,10 @@ init:
 	pip install -r requirements.txt
 
 test:
-	py.test tests
+	py.test -rs tests
 
 coverage:
-	py.test --verbose --cov-report term --cov=cpauto tests
+	py.test -rs --slow --verbose --cov-report term --cov=cpauto tests
 
 publish:
 	python setup.py register

@@ -71,6 +71,7 @@ from .core.sessions import CoreClientResult, CoreClient, LoginMessage, Session
 from .core.misc import Misc
 from .core.exceptions import (
     CoreClientError,
+    WaitOnTaskError,
     ConnectionError,
     HTTPError,
     SSLError,

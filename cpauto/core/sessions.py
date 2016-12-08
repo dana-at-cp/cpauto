@@ -20,6 +20,8 @@
 """This module contains the primary objects needed to manage R80 Web API sessions."""
 
 from .exceptions import (
+    CoreClientError,
+    WaitOnTaskError,
     ConnectionError,
     HTTPError,
     SSLError,
@@ -30,6 +32,8 @@ from .exceptions import (
 
 from ..objects._common import _CommonClient
 
+import time
+
 import requests
 
 class CoreClientResult:
@@ -39,7 +43,15 @@ class CoreClientResult:
     """
     def __init__(self, status_code, json):
         self.status_code = status_code
+        self.success = status_code == 200
+        self.message = ""
         self.__json = json
+
+    def set_success(self, value=True):
+        self.success = value
+
+    def set_message(self, value=""):
+        self.message = value
 
     def json(self):
         return dict(self.__json)
@@ -57,13 +69,14 @@ class CoreClient:
       200
     """
 
-    def __init__(self, user='', password='', mgmt_server='', port=443, verify=True):
+    def __init__(self, user='', password='', mgmt_server='', port=443, verify=True, wait_for_tasks=True):
         self.__last_login_result = None
         self.__user = user
         self.__password = password
         self.__mgmt_server = mgmt_server
         self.__port = port
         self.__verify = verify
+        self.__wait_for_tasks = wait_for_tasks
 
     def __build_uri(self, endpoint):
         uri = 'https://' + self.__mgmt_server + ':' + str(self.__port) + '/web_api/' + endpoint
@@ -75,6 +88,48 @@ class CoreClient:
             last_login_json = self.__last_login_result.json()
             headers['x-chkp-sid'] = last_login_json['sid']
         return headers
+
+    def __wait_on_task(self, task_id):
+        task_complete = False
+        task_r = None
+
+        while not task_complete:
+            task_r = self.http_post(endpoint="show-task", payload={"task-id": task_id, "details-level": "full"})
+
+            if task_r.status_code != 200:
+                raise WaitOnTaskError("Failed to handle asynchronous task as synchronous")
+
+            data = task_r.json()
+            completed_tasks = sum(1 for task in data["tasks"] if task["status"] != "in progress")
+            total_tasks = len(data["tasks"])
+
+            if completed_tasks == total_tasks:
+                task_complete = True
+            else:
+                time.sleep(2)
+
+        self.__check_task_result(task_r)
+        return task_r
+
+    def __wait_on_tasks(self, task_objects):
+        tasks = []
+        for task_object in task_objects:
+            task_id = task_object["task-id"]
+            tasks.append(task_id)
+            self.__wait_on_task(task_id)
+
+        task_r = self.http_post(endpoint="show-task", payload={"task-id": tasks, "details-level": "full"})
+
+        self.__check_task_result(task_r)
+        return task_r
+
+    def __check_task_result(self, task_result):
+        data = task_result.json()
+        for task in data["tasks"]:
+            if task["status"] == "failed" or task["status"] == "partially succeeded":
+                task_result.set_success(False)
+                task_result.set_message("There was at least one task that failed or partially succeeded")
+                break
 
     def http_post(self, endpoint, send_sid=True, payload={}):
         """Makes an HTTP post to the specified API endpoint using user supplied data.
@@ -89,6 +144,13 @@ class CoreClient:
         headers = self.__build_headers(send_sid)
         try:
             r = requests.post(uri, headers=headers, json=payload, verify=self.__verify)
+            # wait for tasks if needed
+            if self.__wait_for_tasks and r.status_code == 200 and endpoint != "show-task":
+                data = r.json()
+                if "task-id" in data:
+                    return self.__wait_on_task(data["task-id"])
+                elif "tasks" in data:
+                    return self.__wait_on_tasks(data["tasks"])
         except requests.exceptions.SSLError as e:
             raise SSLError('SSL error: ' + str(e))
         except requests.exceptions.ConnectionError as e:
