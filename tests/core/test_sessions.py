@@ -61,17 +61,39 @@ def test_login(core_client, mgmt_server_base_uri, params):
     ("someuid"),
 ])
 def test_publish(core_client, mgmt_server_base_uri, uid):
-    endpoint = mgmt_server_base_uri + 'publish'
+    # positive test
+    endpoint_0 = mgmt_server_base_uri + 'publish'
+    resp_body_0 = {"task-id": "01234567-89ab-cdef-a930-8c37a59972b3"}
+    endpoint_1 = mgmt_server_base_uri + 'show-task'
+    resp_body_1 = {'tasks': [{'task-id': '01234567-89ab-cdef-a930-8c37a59972b3', 'status': 'succeeded'}]}
     with responses.RequestsMock() as rsps:
-        resp_body = {'foo': 'bar', 'message': 'OK'}
-        rsps.add(responses.POST, endpoint,
-                 json=resp_body, status=200,
+        rsps.add(responses.POST, endpoint_0,
+                 json=resp_body_0, status=200,
+                 content_type='application/json')
+        rsps.add(responses.POST, endpoint_1,
+                 json=resp_body_1, status=200,
                  content_type='application/json')
 
         r = core_client.publish(uid=uid)
 
         assert r.status_code == 200
-        assert r.json() == resp_body
+        assert r.json() == resp_body_1
+
+    # negative test
+    endpoint_0 = mgmt_server_base_uri + 'publish'
+    resp_body_0 = {"task-id": "01234567-89ab-cdef-a930-8c37a59972b3"}
+    endpoint_1 = mgmt_server_base_uri + 'show-task'
+    resp_body_1 = {"foo": "bar", "message": "Server Busy"}
+    with responses.RequestsMock() as rsps:
+        rsps.add(responses.POST, endpoint_0,
+                 json=resp_body_0, status=200,
+                 content_type='application/json')
+        rsps.add(responses.POST, endpoint_1,
+                 json=resp_body_1, status=500,
+                 content_type='application/json')
+
+        with pytest.raises(cpauto.WaitOnTaskError):
+            r = core_client.publish(uid=uid)
 
 @pytest.mark.parametrize("uid", [
     (""),
@@ -115,3 +137,83 @@ def test_keepalive(core_client, mgmt_server_base_uri):
 
         assert r.status_code == 200
         assert r.json() == resp_body
+
+class TestSession:
+    @pytest.mark.parametrize("resource,params", [
+    ("show-session", {"uid": ""}),
+    ("show-session", {"uid": "someuid"}),
+    ("set-session", {}),
+    ("set-session", {"description": "Some description.", "new-name": "thenewname"}),
+    ("continue-session-in-smartconsole", {"uid": ""}),
+    ("continue-session-in-smartconsole", {"uid": "someuid"}),
+    ("switch-session", {"uid": "someuid"}),
+    ("show-sessions", {"limit": 10, "offset": 1, "order": {"DESC": "Foo"}, "details_level": "full"}),
+    ("show-sessions", {"limit": 500, "offset": 0, "order": {}, "details_level": ""}),
+    ])
+    def test_all_the_things(self, core_client, mgmt_server_base_uri, resource, params):
+        endpoint = mgmt_server_base_uri + resource
+        with responses.RequestsMock() as rsps:
+            resp_body = {'foo': 'bar', 'message': 'OK'}
+            rsps.add(responses.POST, endpoint,
+                     json=resp_body, status=200,
+                     content_type='application/json')
+
+            s = cpauto.Session(core_client)
+            if resource == "show-session":
+                r = s.show(uid=params["uid"])
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+            if resource == "set-session":
+                r = s.set(params=params)
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+            if resource == "continue-session-in-smartconsole":
+                r = s.continue_in_sc(uid=params["uid"])
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+            if resource == "switch-session":
+                r = s.switch(uid=params["uid"])
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+            if resource == "show-sessions":
+                r = s.show_all(limit=params["limit"],offset=params["offset"],order=params["order"],details_level=params["details_level"])
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+class TestLoginMessage:
+    @pytest.mark.parametrize("resource,params", [
+    ("show-login-message", {}),
+    ("set-login-message", {}),
+    ("set-login-message", {"show-message": True, "header": "Warning",
+                           "message": "Unauthorized access of this server is prohibited and punished by law",
+                           "warning": True}),
+    ])
+    def test_all_the_things(self, core_client, mgmt_server_base_uri, resource, params):
+        endpoint = mgmt_server_base_uri + resource
+        with responses.RequestsMock() as rsps:
+            resp_body = {'foo': 'bar', 'message': 'OK'}
+            rsps.add(responses.POST, endpoint,
+                     json=resp_body, status=200,
+                     content_type='application/json')
+
+            lm = cpauto.LoginMessage(core_client)
+            if resource == "show-login-message":
+                r = lm.show()
+
+                assert r.status_code == 200
+                assert r.json() == resp_body
+
+            if resource == "set-login-message":
+                r = lm.set(params=params)
+
+                assert r.status_code == 200
+                assert r.json() == resp_body

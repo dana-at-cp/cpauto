@@ -3,6 +3,18 @@
 Release History
 ---------------
 
+0.0.4 (2016-12-09)
+++++++++++++++++++
+
+**New Features**
+
+- Full support for sessions.
+- The core client now optionally waits for tasks.
+
+**Miscellaneous**
+
+- Documentation is updated and hosted via readthedocs.io.
+
 0.0.3 (2016-11-23)
 ++++++++++++++++++
 

@@ -1,0 +1,4 @@
+import pytest
+
+def pytest_addoption(parser):
+    parser.addoption('--slow', action='store_true', help='Run slow tests')
