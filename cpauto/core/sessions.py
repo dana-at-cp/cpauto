@@ -65,7 +65,7 @@ class CoreClient:
       >>> import cpauto
       >>> cc = cpauto.CoreClient('admin', 'vpn123', '10.11.12.13')
       >>> r = cc.login()
-      >>> print(r.status_code)
+      >>> r.status_code
       200
     """
 
@@ -83,7 +83,7 @@ class CoreClient:
         return uri
 
     def __build_headers(self, send_sid=True):
-        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.3' }
+        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.4' }
         if send_sid and self.__last_login_result is not None:
             last_login_json = self.__last_login_result.json()
             headers['x-chkp-sid'] = last_login_json['sid']
