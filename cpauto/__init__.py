@@ -61,8 +61,8 @@ usage:
 """
 
 __title__ = 'cpauto'
-__version__ = '0.0.4'
-__build__ = 0x000004
+__version__ = '0.0.5'
+__build__ = 0x000005
 __author__ = 'Dana James Traversie'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2016 Dana James Traversie and Check Point Software Technologies, Ltd.'
