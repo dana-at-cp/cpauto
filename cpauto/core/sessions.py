@@ -83,7 +83,7 @@ class CoreClient:
         return uri
 
     def __build_headers(self, send_sid=True):
-        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.4' }
+        headers = { 'content-type': 'application/json', 'user-agent': 'cpauto-CoreClient/0.0.5' }
         if send_sid and self.__last_login_result is not None:
             last_login_json = self.__last_login_result.json()
             headers['x-chkp-sid'] = last_login_json['sid']
@@ -95,6 +95,10 @@ class CoreClient:
 
         while not task_complete:
             task_r = self.http_post(endpoint="show-task", payload={"task-id": task_id, "details-level": "full"})
+
+            while task_r.status_code == 404:
+                time.sleep(1)
+                task_r = self.http_post(endpoint="show-task", payload={"task-id": task_id, "details-level": "full"})
 
             if task_r.status_code != 200:
                 raise WaitOnTaskError("Failed to handle asynchronous task as synchronous")

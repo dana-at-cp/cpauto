@@ -29,6 +29,22 @@ class _CommonClient:
             payload = self.__core_client.merge_payloads(payload, params)
         return self.__core_client.http_post(endpoint, payload=payload)
 
+    def _add_with_layer(self, endpoint="", layer="", position="", params={}):
+        payload = { 'layer': layer, 'position': position }
+        if params:
+            payload = self.__core_client.merge_payloads(payload, params)
+        return self.__core_client.http_post(endpoint, payload=payload)
+
+    def _post_with_layer(self, endpoint='', layer='', name='', uid='', params={}):
+        payload = { 'layer': layer }
+        if name:
+            payload['name'] = name
+        if uid:
+            payload['uid'] = uid
+        if params:
+            payload = self.__core_client.merge_payloads(payload, params)
+        return self.__core_client.http_post(endpoint, payload=payload)
+
     def _show(self, endpoint, name='', uid='', details_level='', params={}):
         payload = {}
         if name:

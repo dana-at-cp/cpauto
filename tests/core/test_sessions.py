@@ -65,19 +65,24 @@ def test_publish(core_client, mgmt_server_base_uri, uid):
     endpoint_0 = mgmt_server_base_uri + 'publish'
     resp_body_0 = {"task-id": "01234567-89ab-cdef-a930-8c37a59972b3"}
     endpoint_1 = mgmt_server_base_uri + 'show-task'
-    resp_body_1 = {'tasks': [{'task-id': '01234567-89ab-cdef-a930-8c37a59972b3', 'status': 'succeeded'}]}
+    resp_body_1 = {'foo': 'bar'}
+    endpoint_2 = mgmt_server_base_uri + 'show-task'
+    resp_body_2 = {'tasks': [{'task-id': '01234567-89ab-cdef-a930-8c37a59972b3', 'status': 'succeeded'}]}
     with responses.RequestsMock() as rsps:
         rsps.add(responses.POST, endpoint_0,
                  json=resp_body_0, status=200,
                  content_type='application/json')
         rsps.add(responses.POST, endpoint_1,
-                 json=resp_body_1, status=200,
+                 json=resp_body_1, status=404,
+                 content_type='application/json')
+        rsps.add(responses.POST, endpoint_2,
+                 json=resp_body_2, status=200,
                  content_type='application/json')
 
         r = core_client.publish(uid=uid)
 
         assert r.status_code == 200
-        assert r.json() == resp_body_1
+        assert r.json() == resp_body_2
 
     # negative test
     endpoint_0 = mgmt_server_base_uri + 'publish'

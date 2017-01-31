@@ -3,6 +3,17 @@
 Release History
 ---------------
 
+0.0.5 (2017-01-31)
+++++++++++++++++++
+
+**New Features**
+
+- Full support for threat profiles.
+
+**Bug Fixes**
+
+- Fixed issue discovered in the wait for task logic.
+
 0.0.4 (2016-12-09)
 ++++++++++++++++++
 
