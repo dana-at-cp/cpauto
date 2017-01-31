@@ -21,27 +21,12 @@
 
 from ._common import _CommonClient
 
-def _ar_as_add(cc, endpoint="", layer="", position="", params={}):
-    payload = { 'layer': layer, 'position': position }
-    if params:
-        payload = cc.merge_payloads(payload, params)
-    return cc.http_post(endpoint, payload=payload)
-
-def _ar_as_post(cc, endpoint='', layer='', name='', uid='', params={}):
-    payload = { 'layer': layer }
-    if name:
-        payload['name'] = name
-    if uid:
-        payload['uid'] = uid
-    if params:
-        payload = cc.merge_payloads(payload, params)
-    return cc.http_post(endpoint, payload=payload)
-
 class AccessRule:
     """Manage access rules."""
 
     def __init__(self, core_client):
         self.__cc = core_client
+        self.__common_client = _CommonClient(core_client)
 
     def add(self, layer="", position="", params={}):
         """Adds an access rule within a layer.
@@ -54,7 +39,7 @@ class AccessRule:
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return _ar_as_add(self.__cc, 'add-access-rule', layer, position, params)
+        return self.__common_client._add_with_layer('add-access-rule', layer, position, params)
 
     def show(self, layer='', name='', uid='', params={}):
         """Shows details of an access rule within a layer.
@@ -67,7 +52,7 @@ class AccessRule:
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'show-access-rule', layer, name, uid, params)
+        return self.__common_client._post_with_layer('show-access-rule', layer, name, uid, params)
 
     def set(self, layer='', name='', uid='', params={}):
         """Sets new values for an access rule within a layer.
@@ -80,7 +65,7 @@ class AccessRule:
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'set-access-rule', layer, name, uid, params)
+        return self.__common_client._post_with_layer('set-access-rule', layer, name, uid, params)
 
     def delete(self, layer='', name='', uid='', params={}):
         """Deletes an existing access rule within a layer.
@@ -93,7 +78,7 @@ class AccessRule:
         :param params: (optional) A dictionary of additional, supported parameter name$
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'delete-access-rule', layer, name, uid, params)
+        return self.__common_client._post_with_layer('delete-access-rule', layer, name, uid, params)
 
     def show_all(self, name='', params={}):
         """Shows all access rules within a layer, section, etc.
@@ -114,6 +99,7 @@ class AccessSection:
 
     def __init__(self, core_client):
         self.__cc = core_client
+        self.__common_client = _CommonClient(core_client)
 
     def add(self, layer="", position="", params={}):
         """Adds an access section within a layer.
@@ -126,7 +112,7 @@ class AccessSection:
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return _ar_as_add(self.__cc, 'add-access-section', layer, position, params)
+        return self.__common_client._add_with_layer('add-access-section', layer, position, params)
 
     def show(self, layer='', name='', uid='', params={}):
         """Shows details of an access section within a layer.
@@ -139,7 +125,7 @@ class AccessSection:
         :param params: (optional) A dictionary of additional, supported parameter name$
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'show-access-section', layer, name, uid, params)
+        return self.__common_client._post_with_layer('show-access-section', layer, name, uid, params)
 
     def set(self, layer='', name='', uid='', params={}):
         """Sets new values for an access section within a layer.
@@ -152,7 +138,7 @@ class AccessSection:
         :param params: (optional) A dictionary of additional, supported parameter names and values.
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'set-access-section', layer, name, uid, params)
+        return self.__common_client._post_with_layer('set-access-section', layer, name, uid, params)
 
     def delete(self, layer='', name='', uid='', params={}):
         """Deletes an existing access section within a layer.
@@ -165,7 +151,7 @@ class AccessSection:
         :param params: (optional) A dictionary of additional, supported parameter name$
         :rtype: CoreClientResult
         """
-        return _ar_as_post(self.__cc, 'delete-access-section', layer, name, uid, params)
+        return self.__common_client._post_with_layer('delete-access-section', layer, name, uid, params)
 
 class AccessLayer:
     """Manage access layers."""
