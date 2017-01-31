@@ -96,3 +96,4 @@ from .objects.service import (
     ServiceRPC
 )
 from .objects.simplegateway import SimpleGateway
+from .objects.threat import ThreatProfile

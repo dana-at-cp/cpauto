@@ -96,6 +96,10 @@ class CoreClient:
         while not task_complete:
             task_r = self.http_post(endpoint="show-task", payload={"task-id": task_id, "details-level": "full"})
 
+            while task_r.status_code == 404:
+                time.sleep(1)
+                task_r = self.http_post(endpoint="show-task", payload={"task-id": task_id, "details-level": "full"})
+
             if task_r.status_code != 200:
                 raise WaitOnTaskError("Failed to handle asynchronous task as synchronous")
 
