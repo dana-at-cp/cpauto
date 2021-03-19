@@ -6,7 +6,7 @@ coverage==4.2
 docutils==0.12
 funcsigs==1.0.2
 imagesize==0.7.1
-Jinja2==2.8
+Jinja2==2.11.3
 MarkupSafe==0.23
 mock==2.0.0
 pbr==1.10.0
