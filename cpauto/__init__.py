@@ -85,6 +85,7 @@ from .objects.application import App, AppCategory, AppGroup
 from .objects.group import Group
 from .objects.host import Host
 from .objects.network import Network
+from .objects.dnsdomain import DNSDomain
 from .objects.policy import Policy, PolicyPackage
 from .objects.service import (
     ServiceTCP,
