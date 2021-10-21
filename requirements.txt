@@ -1,5 +1,5 @@
 alabaster==0.7.9
-Babel==2.3.4
+Babel==2.9.1
 Cheesecake==0.6.2
 cookies==2.2.1
 coverage==4.2
